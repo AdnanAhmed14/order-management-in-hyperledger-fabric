@@ -1,0 +1,319 @@
+version: '2'
+
+volumes:
+  orderer.orderermanagement.com:
+  peer0.audi.orderermanagement.com:
+  ca.audi.orderermanagement.com:
+  ca.bridgestone.orderermanagement.com:
+  ca.mrf.orderermanagement.com:
+  peer1.audi.orderermanagement.com:
+  peer0.bridgestone.orderermanagement.com:
+  peer1.bridgestone.orderermanagement.com:
+  peer0.mrf.orderermanagement.com:
+  peer1.mrf.orderermanagement.com:
+
+networks:
+  auto:
+
+services:
+
+  orderer.orderermanagement.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.orderermanagement.com
+    container_name: orderer.orderermanagement.com
+    networks:
+      - auto
+
+  peer0.audi.orderermanagement.com:
+    container_name: peer0.audi.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.audi.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer0.audicouchdb
+    networks:
+      - auto
+
+  peer0.audicouchdb:
+    container_name: peer0.audicouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "5984:5984"
+    networks:
+      - auto
+
+  peer1.audi.orderermanagement.com:
+    container_name: peer1.audi.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.audi.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer1.audicouchdb
+    networks:
+      - auto
+
+  peer1.audicouchdb:
+    container_name: peer1.audicouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "6984:5984"
+    networks:
+      - auto
+
+  peer0.bridgestone.orderermanagement.com:
+    container_name: peer0.bridgestone.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.bridgestone.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer0.bridgestonecouchdb
+    networks:
+      - auto
+
+  peer0.bridgestonecouchdb:
+    container_name: peer0.bridgestonecouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "7984:5984"
+    networks:
+      - auto
+
+  peer1.bridgestone.orderermanagement.com:
+    container_name: peer1.bridgestone.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.bridgestone.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer1.bridgestonecouchdb
+    networks:
+      - auto
+
+  peer1.bridgestonecouchdb:
+    container_name: peer1.bridgestonecouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "8984:5984"
+    networks:
+      - auto
+
+  peer0.mrf.orderermanagement.com:
+    container_name: peer0.mrf.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.mrf.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer0.mrfcouchdb
+    networks:
+      - auto
+
+  peer0.mrfcouchdb:
+    container_name: peer0.mrfcouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "9984:5984"
+    networks:
+      - auto
+
+  peer1.mrf.orderermanagement.com:
+    container_name: peer1.mrf.orderermanagement.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.mrf.orderermanagement.com
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.audicouchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    depends_on:
+      - peer1.mrfcouchdb
+    networks:
+      - auto
+
+  peer1.mrfcouchdb:
+    container_name: peer1.mrfcouchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "10984:5984"
+    networks:
+      - auto
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - SYS_CHANNEL=$SYS_CHANNEL
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.audi.orderermanagement.com:7051
+      - CORE_PEER_LOCALMSPID=AudiMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/audi.orderermanagement.com/peers/peer0.audi.orderermanagement.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/audi.orderermanagement.com/peers/peer0.audi.orderermanagement.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/audi.orderermanagement.com/peers/peer0.audi.orderermanagement.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/audi.orderermanagement.com/users/Admin@audi.orderermanagement.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode/:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        # - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.orderermanagement.com
+      - peer0.audi.orderermanagement.com
+      - peer1.audi.orderermanagement.com
+      - peer0.bridgestone.orderermanagement.com
+      - peer1.bridgestone.orderermanagement.com
+      - peer0.mrf.orderermanagement.com
+      - peer1.mrf.orderermanagement.com
+    networks:
+      - auto
+
+  ca.audi.orderermanagement.com:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-audi
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.audi.orderermanagement.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f9f20b7b20d1bdcb5fd94bc60de3f5cd6568f879a59db0b55e85838f3627fb12_sk
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.audi.orderermanagement.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/f9f20b7b20d1bdcb5fd94bc60de3f5cd6568f879a59db0b55e85838f3627fb12_sk -b admin:adminpw -d'
+    volumes:
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+      - ./crypto-config/peerOrganizations/audi.orderermanagement.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peeraudi
+    networks:
+      - auto
+
+  ca.bridgestone.orderermanagement.com:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-bridgestone
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bridgestone.orderermanagement.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/067e00f0e65aecbe1b470e7683509ae4b3b686cf191951f30458336d4fd6d35e_sk
+      - FABRIC_CA_SERVER_PORT=8054
+    ports:
+      - "8054:8054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bridgestone.orderermanagement.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/067e00f0e65aecbe1b470e7683509ae4b3b686cf191951f30458336d4fd6d35e_sk -b admin:adminpw -d'
+    volumes:
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+      - ./crypto-config/peerOrganizations/bridgestone.orderermanagement.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerbridgestone
+    networks:
+      - auto
+
+  ca.mrf.orderermanagement.com:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-mrf
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.mrf.orderermanagement.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/8ecdbdcdf2aa7418c7d11461a267e86506b6bffab5e4f79b2851a274f5fbe26c_sk
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - "9054:9054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.mrf.orderermanagement.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/8ecdbdcdf2aa7418c7d11461a267e86506b6bffab5e4f79b2851a274f5fbe26c_sk -b admin:adminpw -d'
+    volumes:
+      - ./fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+      - ./crypto-config/peerOrganizations/mrf.orderermanagement.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peermrf
+    networks:
+      - auto

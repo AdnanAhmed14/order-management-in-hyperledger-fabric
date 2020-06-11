@@ -1,0 +1,28 @@
+    OrdererOrgs:
+        - Name: Orderer
+          Domain: orderermanagement.com
+          EnableNodeOUs: true
+          Specs:
+            - Hostname: orderer
+    PeerOrgs:
+        - Name: audi
+          Domain: audi.orderermanagement.com
+          EnableNodeOUs: true
+          Template:
+            Count: 2
+          Users:
+            Count: 1
+        - Name: mrf
+          Domain: mrf.orderermanagement.com
+          EnableNodeOUs: true
+          Template:
+            Count: 2
+          Users:
+            Count: 1
+        - Name: bridgestone
+          Domain: bridgestone.orderermanagement.com
+          EnableNodeOUs: true
+          Template:
+            Count: 2
+          Users:
+            Count: 1

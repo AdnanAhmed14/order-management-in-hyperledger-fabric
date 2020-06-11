@@ -1,0 +1,4 @@
+stub.getQueryResult(querystring)
+querystring = 
+peer chaincode query -C amchannel -n mycc  -c '{"Args":["query","{\"selector\":{\"docType\":\"order\"}}","19"]}'
+stub.getQueryResultWithPagination(querystring)
